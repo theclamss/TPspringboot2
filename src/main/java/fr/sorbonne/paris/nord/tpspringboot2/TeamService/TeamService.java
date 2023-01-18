@@ -35,6 +35,10 @@ public class TeamService {
 
         return teamRepository.save(entity);
     }
+    public void deleteteam(Long id){
+        team t1 = teamRepository.findById(id).orElseThrow();
+        teamRepository.delete(t1);
+    }
 
 
 }

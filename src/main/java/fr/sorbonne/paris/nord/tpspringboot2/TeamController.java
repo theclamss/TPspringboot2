@@ -48,6 +48,12 @@ public class TeamController {
            return teamService.upadateteam(id,name,slogan);
         }
     }
+    @PutMapping("/delete")
+    public void deleteTeam( @RequestParam Long id) {
+
+        teamService.deleteteam(id);
+
+    }
 
 
 
