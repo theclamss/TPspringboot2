@@ -4,10 +4,12 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "team")
-public class team {
+public class Team {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+
 
     @Override
     public String toString() {
@@ -21,11 +23,16 @@ public class team {
     @Column(name = "nom")
     private String nom;
 
-    public team(String nom, String slogan) {
+    public Team(String nom, String slogan) {
         this.nom = nom;
         this.slogan = slogan;
     }
-    public team() {
+    public Team(Long id, String nom, String slogan) {
+        this.nom = nom;
+        this.slogan = slogan;
+        this.id=id;
+    }
+    public Team() {
 
     }
     @Column(name = "slogan")

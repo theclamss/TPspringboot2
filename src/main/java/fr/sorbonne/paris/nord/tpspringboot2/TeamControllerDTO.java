@@ -1,6 +1,7 @@
-/*package fr.sorbonne.paris.nord.tpspringboot2;
+package fr.sorbonne.paris.nord.tpspringboot2;
 
-import fr.sorbonne.paris.nord.tpspringboot2.TeamService.TeamService;
+import fr.sorbonne.paris.nord.tpspringboot2.DTOs.TeamDTO;
+import fr.sorbonne.paris.nord.tpspringboot2.TeamService.TeamServiceWithDTO;
 import fr.sorbonne.paris.nord.tpspringboot2.models.Team;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,42 +12,45 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/teams")
-public class TeamController {
+public class TeamControllerDTO {
 
-   @Autowired
-    private TeamService teamService;
+    @Autowired
+    private TeamServiceWithDTO teamService;
 
     @GetMapping
-    public ResponseEntity<List<Team>> getAllTeams() {
-        List<Team> teams = teamService.getAllTeams();
+    public ResponseEntity<List<TeamDTO>> getAllTeams() {
+        System.out.println("hhhhh");
+        List<TeamDTO> teams = teamService.getAllTeams();
         return new ResponseEntity<>(teams, HttpStatus.OK);
     }
     @GetMapping("/{id}")
-    public ResponseEntity<Team> getTeams(@PathVariable Long id) {
-        Team teams = teamService.getTeamById(id);
+    public ResponseEntity<TeamDTO> getTeams(@PathVariable Long id) {
+        TeamDTO teams = teamService.getTeamById(id);
         return new ResponseEntity(teams, HttpStatus.OK);
     }
     @GetMapping("/{nom}/{slogan}")
     public ResponseEntity<Team> getTeams(@PathVariable String nom, @PathVariable String slogan) {
-        Team t1=new Team(nom,slogan);
-        Team teams = teamService.insertteam(t1);
+        TeamDTO t1=new TeamDTO(nom,slogan);
+        TeamDTO teams = teamService.insertteam(t1);
         return new ResponseEntity(teams, HttpStatus.OK);
     }
-
+        /*
     @PutMapping
-    public Team updateTeam(@RequestParam String name, @RequestParam String slogan) {
+    public TeamDTO updateTeam(@RequestParam String name, @RequestParam String slogan) {
 
 
-        Team existingTeam = teamService.getTeamByName(name);
+        TeamDTO existingTeam = teamService.getTeamByName(name);
         if (existingTeam == null) {
-            Team t2=new Team(name,slogan);
+            TeamDTO t2=new TeamDTO(name,slogan);
             return teamService.insertteam(t2);
         } else {
             Long id=existingTeam.getId();
 
-           return teamService.upadateteam(id,name,slogan);
+            return teamService.updateteam(id,name,slogan);
         }
     }
+    */
+
     @PutMapping("/delete")
     public void deleteTeam( @RequestParam Long id) {
 
@@ -56,6 +60,6 @@ public class TeamController {
 
 
 
-    
+
 }
-*/
+
