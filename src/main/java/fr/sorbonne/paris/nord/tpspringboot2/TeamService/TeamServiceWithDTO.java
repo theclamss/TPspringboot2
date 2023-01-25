@@ -1,6 +1,7 @@
 package fr.sorbonne.paris.nord.tpspringboot2.TeamService;
 
 import fr.sorbonne.paris.nord.tpspringboot2.DTOs.TeamDTO;
+import fr.sorbonne.paris.nord.tpspringboot2.EntitiesNotFoundException;
 import fr.sorbonne.paris.nord.tpspringboot2.Mapper.TeamMapper;
 import fr.sorbonne.paris.nord.tpspringboot2.Repository.TeamRepository;
 import fr.sorbonne.paris.nord.tpspringboot2.models.Team;
@@ -43,6 +44,12 @@ public class TeamServiceWithDTO {
     }
 
 
-    public void deleteteam(Long id) {
+    public void deleteteam(Long id){
+        try {
+            Team t1 = teamRepository.findById(id).orElseThrow(EntitiesNotFoundException::new);
+            teamRepository.delete(t1);
+        } catch (EntitiesNotFoundException e) {
+            throw e;
+        }
     }
 }

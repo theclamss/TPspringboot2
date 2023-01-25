@@ -24,10 +24,16 @@ public class TeamControllerDTO {
         return new ResponseEntity<>(teams, HttpStatus.OK);
     }
     @GetMapping("/{id}")
-    public ResponseEntity<TeamDTO> getTeams(@PathVariable Long id) {
-        TeamDTO teams = teamService.getTeamById(id);
-        return new ResponseEntity(teams, HttpStatus.OK);
-    }
+    public ResponseEntity<TeamDTO> getTeamById(@PathVariable Long id) {
+        try {
+            TeamDTO team = teamService.getTeamById(id);
+            if(team == null) {
+                throw new EntitiesNotFoundException();
+            }
+            return new ResponseEntity<>(team, HttpStatus.OK);
+        } catch (EntitiesNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }}
     @GetMapping("/{nom}/{slogan}")
     public ResponseEntity<Team> getTeams(@PathVariable String nom, @PathVariable String slogan) {
         TeamDTO t1=new TeamDTO(nom,slogan);
@@ -51,11 +57,14 @@ public class TeamControllerDTO {
     }
     */
 
-    @PutMapping("/delete")
-    public void deleteTeam( @RequestParam Long id) {
-
-        teamService.deleteteam(id);
-
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteTeam(@PathVariable Long id) {
+        try {
+            teamService.deleteteam(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (EntitiesNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
 
