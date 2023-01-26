@@ -25,37 +25,32 @@ public class TeamControllerDTO {
     }
     @GetMapping("/{id}")
     public ResponseEntity<TeamDTO> getTeamById(@PathVariable Long id) {
-        try {
-            TeamDTO team = teamService.getTeamById(id);
-            if(team == null) {
-                throw new EntitiesNotFoundException();
-            }
-            return new ResponseEntity<>(team, HttpStatus.OK);
-        } catch (EntitiesNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }}
+
+        TeamDTO team = teamService.getTeamById(id);
+
+        return new ResponseEntity<>(team, HttpStatus.OK);
+    }
     @GetMapping("/{nom}/{slogan}")
     public ResponseEntity<Team> getTeams(@PathVariable String nom, @PathVariable String slogan) {
         TeamDTO t1=new TeamDTO(nom,slogan);
         TeamDTO teams = teamService.insertteam(t1);
         return new ResponseEntity(teams, HttpStatus.OK);
     }
-        /*
+
     @PutMapping
-    public TeamDTO updateTeam(@RequestParam String name, @RequestParam String slogan) {
+    public ResponseEntity<Void> updateTeam(@RequestBody TeamDTO t) {
 
-
-        TeamDTO existingTeam = teamService.getTeamByName(name);
-        if (existingTeam == null) {
-            TeamDTO t2=new TeamDTO(name,slogan);
-            return teamService.insertteam(t2);
-        } else {
-            Long id=existingTeam.getId();
-
-            return teamService.updateteam(id,name,slogan);
+        try {
+            teamService.upadateteam(t);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (EntitiesNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+
+
+
     }
-    */
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTeam(@PathVariable Long id) {

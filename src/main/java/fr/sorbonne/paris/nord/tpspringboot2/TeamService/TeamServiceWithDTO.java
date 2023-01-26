@@ -2,12 +2,14 @@ package fr.sorbonne.paris.nord.tpspringboot2.TeamService;
 
 import fr.sorbonne.paris.nord.tpspringboot2.DTOs.TeamDTO;
 import fr.sorbonne.paris.nord.tpspringboot2.EntitiesNotFoundException;
+import fr.sorbonne.paris.nord.tpspringboot2.EntityInvalidException;
 import fr.sorbonne.paris.nord.tpspringboot2.Mapper.TeamMapper;
 import fr.sorbonne.paris.nord.tpspringboot2.Repository.TeamRepository;
 import fr.sorbonne.paris.nord.tpspringboot2.models.Team;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,13 +37,37 @@ public class TeamServiceWithDTO {
 
     }
 
-    public TeamDTO getTeamById(Long id) {
-        return teamMapper.teamToTeamDTO(Collections.singletonList(teamRepository.findById(id).orElse(null)).get(0));
+    public TeamDTO getTeamById(Long id) throws EntityNotFoundException {
+        return teamMapper.teamToTeamDTO(Collections.singletonList(teamRepository.findById(id).orElseThrow(EntitiesNotFoundException::new)).get(0));
     }
 
     public TeamDTO insertteam(TeamDTO teamDTO) {
+
         return teamMapper.teamToTeamDTO((Team) Collections.singletonList(teamRepository.save(teamMapper.teamDTOToTeam(teamDTO))));
     }
+
+    public void upadateteam(TeamDTO t) throws EntityInvalidException {
+
+        Team m=teamMapper.teamDTOToTeam(t);
+
+        TeamDTO existingTeam = getTeamByName(m.getNom());
+        if(existingTeam==null){
+
+
+                teamRepository.save(m);
+
+        }
+
+        else {
+            existingTeam.setNom(t.getNom());
+            existingTeam.setSlogan(t.getSlogan());
+
+                teamRepository.save(teamMapper.teamDTOToTeam(existingTeam));
+
+
+        }
+
+            }
 
 
     public void deleteteam(Long id){
