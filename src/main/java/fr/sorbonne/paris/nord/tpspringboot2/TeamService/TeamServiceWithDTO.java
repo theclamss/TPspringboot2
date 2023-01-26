@@ -51,20 +51,15 @@ public class TeamServiceWithDTO {
         Team m=teamMapper.teamDTOToTeam(t);
 
         TeamDTO existingTeam = getTeamByName(m.getNom());
+
         if(existingTeam==null){
-
-
                 teamRepository.save(m);
-
         }
 
         else {
-            existingTeam.setNom(t.getNom());
-            existingTeam.setSlogan(t.getSlogan());
-
+                existingTeam.setNom(t.getNom());
+                existingTeam.setSlogan(t.getSlogan());
                 teamRepository.save(teamMapper.teamDTOToTeam(existingTeam));
-
-
         }
 
             }
